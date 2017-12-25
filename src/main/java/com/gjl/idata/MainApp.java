@@ -3,6 +3,7 @@ package com.gjl.idata;
 import com.gjl.idata.model.Person;
 import com.gjl.idata.model.PersonListWrapper;
 import com.gjl.idata.util.FxDialogs;
+import com.gjl.idata.view.BirthdayStatisticsController;
 import com.gjl.idata.view.PersonEditDialogController;
 import com.gjl.idata.view.PersonOverviewController;
 import com.gjl.idata.view.RootController;
@@ -262,6 +263,32 @@ public class MainApp extends Application {
             setPersonFilePath(file);
         } catch (Exception e) { // catches ANY exception
             FxDialogs.showException("Error", "Could not save data to file:\n" + file.getPath(), e);
+        }
+    }
+
+    /**
+     * Opens a dialog to show birthday statistics.
+     */
+    public void showBirthdayStatistics() {
+        try {
+            // Load the fxml file and create a new stage for the popup.
+            FXMLLoader loader = new FXMLLoader();
+            AnchorPane page = (AnchorPane) loader.load(getClass().getResourceAsStream("/view/BirthdayStatistics.fxml"));
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Birthday Statistics");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the persons into the controller.
+            BirthdayStatisticsController controller = loader.getController();
+            controller.setPersonData(personData);
+
+            dialogStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
